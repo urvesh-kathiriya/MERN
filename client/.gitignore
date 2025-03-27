@@ -27,3 +27,7 @@ node_modules/
 .env
 .DS_Store
 *.log
+
+# Ignore environment files in all directories
+**/.env
+**/.env.*
