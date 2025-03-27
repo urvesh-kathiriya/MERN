@@ -1,0 +1,22 @@
+
+button{
+    cursor: pointer;
+}
+
+body{
+    background-color: rgb(194, 194, 194);
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+  
+  .animate-gradient {
+    background-image: linear-gradient(to bottom right, #FF6B6B, #6B5B95, #56CCF2, #28A745);
+    background-size: 300% 300%;
+    animation: gradientMove 4s infinite ease-in-out;
+  }
+  
+      
