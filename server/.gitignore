@@ -24,9 +24,14 @@ dist-ssr
 *.sw?
 
 
-**/.env.*
+
 # Ignore all .env files in any directory
+# Ignore all .env files but allow .env.example
 **/.env
-**/.env.*
 server/.env
 client/.env
+
+# Allow example environment files
+!server/.env.example
+!client/.env.example
+
