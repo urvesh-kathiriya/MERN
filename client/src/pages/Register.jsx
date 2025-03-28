@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import image from '../assets/images/register.png';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
@@ -30,6 +32,16 @@ const Register = () => {
       const response = await axios.post(`${apiUrl}/api/users/register`, user)
       
       if (response.statusText === "OK") {
+        toast.success('Register successfully !', {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
         navigate("/login",{state:user.Email})
       }
 
@@ -140,6 +152,7 @@ const Register = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 

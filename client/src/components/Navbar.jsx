@@ -8,6 +8,7 @@ export default function  Navbar() {
   const location = useLocation()
   const [user, setUser] = useState()
   const [path, setPath] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const { data, isExpired, isLoggin } = useContext(AuthContext)
 
 
@@ -29,6 +30,7 @@ export default function  Navbar() {
   useEffect(() => {
     if (data) {
       setUser(data.User_name)
+      setIsAdmin(data.isAdmin)
     } else {
       setUser("")
     }
@@ -54,6 +56,10 @@ export default function  Navbar() {
         {isOpen ? "✖" : "☰"}
       </button>
       <div className={`md:flex grid grid-cols-2 justify-center space-x-6 ${isOpen ? "block" : "hidden"} absolute md:static top-16 left-0 w-full md:w-auto bg-gray-900 md:bg-transparent p-4 md:p-2 gap-2 mr-5 `}>
+        {isAdmin && isLoggin &&
+        <button className={active("/admin")} onClick={() => reDirect("/admin")}>Admin {span()}</button>
+
+        }
         <button className={active("/")} onClick={() => reDirect("/")}>Home {span()}</button>
         <button className={active("/about")} onClick={() => reDirect("/about")}>About {span()}</button>
         <button className={active("/service")} onClick={() => reDirect("/service")}>Service {span()}</button>

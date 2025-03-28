@@ -15,6 +15,11 @@ import UserDetail from './pages/UserDetail'
 import Protectedroute from './ProtectedRoute/Protectedroute'
 import { useContext } from 'react'
 import AfterLoginRegister from './pages/AfterLoginRegister'
+import { ToastContainer } from 'react-toastify'
+import AdminLayout from './components/Layout/Admin-Layout'
+import Adminuser from './components/Layout/Admin-user'
+import Admincontact from './components/Layout/Admin-Contact'
+import AdminService from './components/Layout/Admin-Service'
 
 function App() {
   const { isLoggin } = useContext(AuthContext)
@@ -35,11 +40,15 @@ function App() {
          <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/logout' element={<Logout />} />
-
+        <Route path='/admin' element={<AdminLayout/>}>
+          <Route path='users' element={<Adminuser />} />
+          <Route path='contacts' element={<Admincontact />} />
+          <Route path='services' element={<AdminService />} />
+        </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />
-
+      <ToastContainer  />
     </>
   )
 }

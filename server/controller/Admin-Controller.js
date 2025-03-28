@@ -1,4 +1,5 @@
 import Contact from "../Model/Contact-Model.js";
+import Services from "../Model/Services-Model.js";
 import UserModel from "../Model/User-Model.js";
 
 export const getallusers = async (req, res) => {
@@ -14,9 +15,21 @@ export const getallusers = async (req, res) => {
 
 export const getallcontact = async (req, res) => {
     try {
-        const contact = await Contact.find().select({__v: 0, updatedAt: 0,createdAt: 0});
+        const contact = await Contact.find().select({ __v: 0, updatedAt: 0, createdAt: 0 });
         if (!contact && contact.length === 0) return res.status(404).json({ message: "No contact found" });
         res.status(200).json(contact);
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
+export const getallservices = async (req, res) => {
+    try {
+        const services = await Services.find().select({ __v: 0, updatedAt:0, createdAt: 0});
+        if (!services && services.length === 0) return res.status(404).json({ message: "No services found" });
+        res.status(200).json(services);
     }
     catch (error) {
         res.status(500).json({ message: error.message });

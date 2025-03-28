@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import image from '../assets/images/login.png';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,7 +14,7 @@ const Login = () => {
   const [user, setUser] = useState({
     Email: '',
     Password: '',
-  });    
+  });
   const handleUser = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
@@ -31,6 +33,11 @@ const Login = () => {
     try {
       const res = await axios.post(`${apiUrl}/api/users/login`, user);
       if (res.status === 200) {
+        toast.success('Login successfully !', {
+          position: "bottom-center",
+          autoClose: 5000,
+          theme: "dark",
+        });
         await storetokenINLS(res.data.token)
         navigate('/');
       } else {
