@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import image from '../assets/images/login.png';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../store/auth';
 
 const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const apiUrl = import.meta.env.VITE_API_URL
   const { storetokenINLS, isLoggin } = useContext(AuthContext)
-  const path = location.pathname
   const [user, setUser] = useState({
     Email: '',
     Password: '',
@@ -17,6 +17,13 @@ const Login = () => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    if (location.state) {
+      setUser((prev) => ({ ...prev, Email: location.state }))
+    }
+  }, [location.state])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();

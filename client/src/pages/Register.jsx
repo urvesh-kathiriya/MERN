@@ -30,7 +30,7 @@ const Register = () => {
       const response = await axios.post(`${apiUrl}/api/users/register`, user)
       
       if (response.statusText === "OK") {
-        navigate("/")
+        navigate("/login",{state:user.Email})
       }
 
     } catch (error) {
