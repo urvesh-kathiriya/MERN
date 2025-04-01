@@ -27,11 +27,44 @@ export const getallcontact = async (req, res) => {
 
 export const getallservices = async (req, res) => {
     try {
-        const services = await Services.find().select({ __v: 0, updatedAt:0, createdAt: 0});
+        const services = await Services.find().select({ __v: 0, updatedAt: 0, createdAt: 0 });
         if (!services && services.length === 0) return res.status(404).json({ message: "No services found" });
         res.status(200).json(services);
     }
     catch (error) {
         res.status(500).json({ message: error.message });
+    }
+}
+
+
+export const deleteusers = async (req, res) => {
+    try {
+        const { id } = req.params
+        const user = await UserModel.findByIdAndDelete(id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.status(200).json({ message: "User deleted successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+
+
+}
+
+export const updateusers = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { _id, ...data } = req.body;
+
+        const updatedUser = await UserModel.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User updated successfully', user: data });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 }

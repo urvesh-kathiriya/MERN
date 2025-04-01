@@ -9,14 +9,14 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [token, setToken] = useState()
+  const [token, setToken] = useState(localStorage.getItem("token")?localStorage.getItem("token"):'')
   const [isLoggin, setIsLoggin] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
   const [data, setData] = useState(null);
   const apiurl = import.meta.env.VITE_API_URL
 
+
   const storetokenINLS = (token) => {
-    setToken(token)
     return localStorage.setItem('token', token);
   }
 
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
       const isExpired = isTokenExpired(token);
       setIsExpired(isExpired);
       if (!token || isExpired) {
-        location.pathname === "/" ? null :navigate('/login');
+        location.pathname === "/" ? null : navigate('/login');
         return localStorage.removeItem("token")
 
       }
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider value={{ storetokenINLS, LogoutUser, isLoggin, data, isExpired }}>
+    <AuthContext.Provider value={{ storetokenINLS, LogoutUser, isLoggin, data, isExpired, token }}>
       {children}
     </AuthContext.Provider>
   )

@@ -20,6 +20,7 @@ import AdminLayout from './components/Layout/Admin-Layout'
 import Adminuser from './components/Layout/Admin-user'
 import Admincontact from './components/Layout/Admin-Contact'
 import AdminService from './components/Layout/Admin-Service'
+import AdminProtectedRoute from './ProtectedRoute/AdminProtectedRoute'
 
 function App() {
   const { isLoggin } = useContext(AuthContext)
@@ -37,18 +38,20 @@ function App() {
           <Route path='/userDetail' element={<UserDetail />} />
           <Route path='/afterloginregister' element={<AfterLoginRegister />} />  {/* waiting stage */}
         </Route>
-         <Route path='/login' element={<Login />} />
+        <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/logout' element={<Logout />} />
-        <Route path='/admin' element={<AdminLayout/>}>
-          <Route path='users' element={<Adminuser />} />
-          <Route path='contacts' element={<Admincontact />} />
-          <Route path='services' element={<AdminService />} />
+        <Route element={<AdminProtectedRoute />}>
+          <Route path='/admin' element={<AdminLayout />}>
+            <Route path='users' element={<Adminuser />} />
+            <Route path='contacts' element={<Admincontact />} />
+            <Route path='services' element={<AdminService />} />
+          </Route>
         </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />
-      <ToastContainer  />
+      <ToastContainer />
     </>
   )
 }

@@ -68,7 +68,7 @@ const Contact = () => {
               <input type="text" name="username" className="w-full p-2 border border-gray-600 rounded mb-4" value={contact.username} onChange={handleContact} placeholder="Enter username" required />
 
               <label className="block mb-2">Email</label>
-              <input type="email" name="email" className="w-full p-2 border border-gray-600 rounded mb-4" value={contact.email} onChange={handleContact} placeholder="Enter Email" required />
+              <input type="email" name="email" className="w-full p-2 border border-gray-600 rounded mb-4" value={contact.email} onChange={handleContact} placeholder="Enter Email" required disabled />
 
               <label className="block mb-2">Message</label>
               <textarea name="message" className="w-full p-2 border border-gray-600 rounded mb-4" value={contact.message} onChange={handleContact} placeholder="Enter Message" required />
