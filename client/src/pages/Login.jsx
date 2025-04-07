@@ -73,11 +73,11 @@ const Login = () => {
 
           <form className="bg-gray-200 p-6 rounded-lg shadow-lg w-96" onSubmit={handleSubmit}>
 
-            <label className="block mb-2">Email</label>
-            <input type="email" name="Email" className="w-full p-2 border border-gray-600 rounded mb-4" autoComplete='email' value={user.Email} onChange={handleUser} placeholder="Enter email" required />
+            <label htmlFor='email' className="block mb-2">Email</label>
+            <input type="email" id='email' name="Email" className="w-full p-2 border border-gray-600 rounded mb-4" autoComplete='email' value={user.Email} onChange={handleUser} placeholder="Enter email" required />
 
-            <label className="block mb-2">Password</label>
-            <input type="password" name="Password" autoComplete="current-password" className="w-full p-2 border border-gray-600 rounded mb-4" value={user.Password} onChange={handleUser} placeholder="Enter password" required />
+            <label htmlFor='password' className="block mb-2">Password</label>
+            <input type="password" id='password' name="Password" autoComplete="current-password" className="w-full p-2 border border-gray-600 rounded mb-4" value={user.Password} onChange={handleUser} placeholder="Enter password" required />
 
             <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
               Submit

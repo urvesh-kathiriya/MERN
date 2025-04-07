@@ -1,7 +1,8 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AdminUserContext } from "./AdminUserStore";
 
 
 export const AuthContext = createContext();
@@ -9,7 +10,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [token, setToken] = useState(localStorage.getItem("token")?localStorage.getItem("token"):'')
+  const [token, setToken] = useState(localStorage.getItem('token') || "")
   const [isLoggin, setIsLoggin] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
   const [data, setData] = useState(null);

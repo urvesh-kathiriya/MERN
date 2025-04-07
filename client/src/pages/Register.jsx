@@ -88,9 +88,10 @@ const Register = () => {
           </h1>
           <form className="bg-gray-200 p-6 rounded-lg shadow-lg w-96" onSubmit={handleSubmit}>
 
-            <label className="block mb-2">Username</label>
+            <label htmlFor="User_name" className="block mb-2">Username</label>
             <input
               type="text"
+              id='User_name'
               name="User_name"
               autoComplete="username"
               className="w-full p-2 border border-gray-600 rounded mb-4"
@@ -100,9 +101,10 @@ const Register = () => {
               required
             />
 
-            <label className="block mb-2">Email</label>
+            <label htmlFor="Email" className="block mb-2">Email</label>
             <input
               type="email"
+              id='Email'
               name="Email"
               autoComplete="email"
               className="w-full p-2 border border-gray-600 rounded "
@@ -117,9 +119,10 @@ const Register = () => {
               </div>
             )}
 
-            <label className="block mb-2 mt-4">Phone Number</label>
+            <label htmlFor="Number" className="block mb-2 mt-4">Phone Number</label>
             <input
               type="tel"
+              id='Number'
               name="Number"
               autoComplete="tel"
               className="w-full p-2 border border-gray-600 rounded mb-4"
@@ -129,9 +132,10 @@ const Register = () => {
               required
             />
 
-            <label className="block mb-2">Password</label>
+            <label htmlFor="Password" className="block mb-2">Password</label>
             <input
               type="password"
+              id='Password'
               name="Password"
               autoComplete="new-password"
               className="w-full p-2 border border-gray-600 rounded mb-4"

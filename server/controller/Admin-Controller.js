@@ -68,3 +68,65 @@ export const updateusers = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 }
+
+
+
+
+export const deletecontacts = async(req,res) => {
+    try {
+        const { id } = req.params
+        const contact = await Contact.findByIdAndDelete(id);
+        if (!contact) return res.status(404).json({ message: "Contact not found" });
+        res.status(200).json({ message: "Contact deleted successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+export const updatecontacts = async(req,res) => {
+    try {
+        const { id } = req.params;
+        const { _id, ...data } = req.body;
+
+        const updatedContact = await Contact.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+
+        if (!updatedContact) {
+            return res.status(404).json({ message: 'Contact not found' });
+        }
+
+        res.status(200).json({ message: 'Contact updated successfully', user: data });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+}
+export const deleteservices = async(req,res) => {
+    try {
+        const { id } = req.params
+        const services = await Services.findByIdAndDelete(id);
+        if (!services) return res.status(404).json({ message: "Services not found" });
+        res.status(200).json({ message: "Services deleted successfully" });
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+export const updateservices = async(req,res) => {
+
+    try {
+        const { id } = req.params;
+        const { _id, ...data } = req.body;
+
+        const updatedServices = await Services.findByIdAndUpdate(id, data, { new: true, runValidators: true });
+
+        if (!updatedServices) {
+            return res.status(404).json({ message: 'Services not found' });
+        }
+
+        res.status(200).json({ message: 'Services updated successfully', user: data });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+}

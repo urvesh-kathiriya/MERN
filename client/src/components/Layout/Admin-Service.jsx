@@ -1,33 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useContext } from 'react'
 import { Activity, Castle, DollarSign, FileText, Pencil, Trash2 } from 'lucide-react'
-import { AuthContext } from '../../store/auth'
 import { BeatLoader } from 'react-spinners'
+import { AdminUserContext } from '../../store/AdminUserStore'
 
 const AdminService = () => {
-  const [services, setServices] = useState([])
-  const { token } = useContext(AuthContext)
-  const [isLoading, setIsLoading] = useState(true)
-  const api = import.meta.env.VITE_API_URL
+  const { isLoading,
+    services,
+    handleDelete,
+    handledit,
+    handlesaveedituser,
+    edituserId,
+    editedServices, 
+    setEditedServices,
+    handleInputChange
+  } = useContext(AdminUserContext)
 
-  useEffect(() => {
-    const fetchservices = async () => {
-      try {
-        const res = await axios.get(`${api}/api/admin/services`, {
-          headers: {
-            'authToken': 'Bearer ' + token ? token : ''
-          }
-        })
-        if (res.data) {
-          setServices(res.data)
-          setIsLoading(false)
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchservices()
-  }, [token])
+
 
   if (isLoading) return <div className="flex justify-center items-center h-screen"><BeatLoader color='#D946EF' size={15} /></div>
   return (
@@ -37,30 +25,67 @@ const AdminService = () => {
         {services?.map((service, index) => (
           <div key={service._id || index} className=' p-5 border-2  flex flex-col gap-2  border-gray-900 bg-gradient-to-b from-black/80 to-gray-900 text-orange-300 rounded-lg shadow-lg '>
             <div className='flex justify-start gap-5 items-start'>
-              <Activity  className="w-6 h-6 text-blue-400 " />
-              <h2>{service.service}</h2>
+              <div className='w-6 h-6'>
+                <Activity className=" text-blue-400 " />
+              </div>
+              <input className='truncate'
+                value={edituserId === service._id ? editedServices?.service  ?? "" : service.service}
+                onChange={(e) => handleInputChange(service._id, 'service', e.target.value, "service")}
+                disabled={edituserId !== service._id}
+
+              />
             </div>
             <div className='flex justify-start gap-5 items-start'>
-            <FileText  className='w-6 h-6 text-green-400 ' />
-              <p className='truncate'>{service.description}</p>
+              <div className='w-6 h-6'>
+                <FileText className=' text-green-400 ' />
+              </div>
+              <input className='truncate'
+                value={edituserId === service._id ? editedServices?.description  ?? "" : service.description}
+                onChange={(e) => handleInputChange(service._id, 'description', e.target.value, "service")}
+                disabled={edituserId !== service._id} />
 
             </div>
             <div className='flex justify-start gap-5 items-start'>
-            <DollarSign  className='w-6 h-6 text-red-400 ' />
-              <p>{service.price}</p>
+              <div className='w-6 h-6'>
+                <DollarSign className=' text-red-400 ' />
+              </div>
+              <input
+                value={edituserId === service._id ? editedServices?.price  ?? "" : service.price}
+                onChange={(e) => handleInputChange(service._id, 'price', e.target.value, "service")}
+                disabled={edituserId !== service._id}
+              />
 
             </div>
             <div className='flex justify-start gap-5 items-start'>
-            <Castle className='w-6 h-6 text-yellow-400 ' />
-              <p>{service.provider}</p>
+              <div className=''>
+                <Castle className=' text-yellow-400 ' />
+              </div>
+              <input
+                value={edituserId === service._id ? editedServices?.provider  ?? "" : service.provider}
+                onChange={(e) => handleInputChange(service._id, 'provider', e.target.value, "service")}
+                disabled={edituserId !== service._id}
+              />
             </div>
-            <div className='grid md:grid-cols-2 grid-cols-1 gap-3 mt-2 border-t-2 border-fuchsia-500 rounded-2xl'>
-              <button className='flex justify-center items-center'>
-                <Pencil className='w-5 h-5 mt-3 text-cyan-400 ' />
-              </button>
-              <button className='flex justify-center items-center'>
-                <Trash2 className='w-5 h-5 mt-3 text-cyan-400' />
-              </button>
+            <div className='mt-2 border-t-2 border-fuchsia-500 rounded-2xl'>
+              {edituserId === service._id ? (
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-3 mt-3">
+                  <button onClick={() => { handledit(null,null), setEditedServices({}) }} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                    Cancel
+                  </button>
+                  <button onClick={() => { handledit(null,null), handlesaveedituser("services") }} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Save
+                  </button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
+                  <button className="flex justify-center items-center" onClick={() => handledit(service._id,"service")}>
+                    <Pencil className="w-5 h-5 mt-3 text-cyan-400" />
+                  </button>
+                  <button className="flex justify-center items-end" onClick={() => handleDelete(service._id, null, null, "services")}>
+                    <Trash2 className="w-5 h-5 mt-3 text-cyan-400" />
+                  </button>
+                </div>
+              )}
 
             </div>
           </div>

@@ -8,10 +8,10 @@ import { AdminProvider } from './store/AdminUserStore.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-  <AuthProvider>
     <AdminProvider>
-    <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </AdminProvider>
-  </AuthProvider>
   </BrowserRouter>,
 )
