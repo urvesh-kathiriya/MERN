@@ -10,7 +10,7 @@ const AdminService = () => {
     handledit,
     handlesaveedituser,
     edituserId,
-    editedServices, 
+    editedServices,
     setEditedServices,
     handleInputChange
   } = useContext(AdminUserContext)
@@ -29,7 +29,7 @@ const AdminService = () => {
                 <Activity className=" text-blue-400 " />
               </div>
               <input className='truncate'
-                value={edituserId === service._id ? editedServices?.service  ?? "" : service.service}
+                value={edituserId === service._id ? editedServices?.service ?? "" : service.service}
                 onChange={(e) => handleInputChange(service._id, 'service', e.target.value, "service")}
                 disabled={edituserId !== service._id}
 
@@ -40,28 +40,60 @@ const AdminService = () => {
                 <FileText className=' text-green-400 ' />
               </div>
               <input className='truncate'
-                value={edituserId === service._id ? editedServices?.description  ?? "" : service.description}
+                value={edituserId === service._id ? editedServices?.description ?? "" : service.description}
                 onChange={(e) => handleInputChange(service._id, 'description', e.target.value, "service")}
                 disabled={edituserId !== service._id} />
 
             </div>
             <div className='flex justify-start gap-5 items-start'>
               <div className='w-6 h-6'>
-                <DollarSign className=' text-red-400 ' />
+                <DollarSign className='text-red-400' />
               </div>
-              <input
-                value={edituserId === service._id ? editedServices?.price  ?? "" : service.price}
-                onChange={(e) => handleInputChange(service._id, 'price', e.target.value, "service")}
-                disabled={edituserId !== service._id}
-              />
 
+              {edituserId === service._id ? (
+                (() => {
+                  const fullPrice = editedServices?.price ?? service.price ?? "";
+                  const priceParts = fullPrice.split('-');
+                  const firstPrice = priceParts[0]?.replace('$', '') ?? "";
+                  const secondPrice = priceParts[1]?.replace('$', '') ?? "";
+
+                  return (
+                    <div className='flex items-center gap-1'>
+                      <p>$</p>
+                      <input
+                        value={firstPrice}
+                        onChange={(e) => {
+                          if (e.target.value.length < 5) handleInputChange(service._id, 'price', `$${e.target.value}-$${secondPrice}`, "service")
+                        }
+                        }
+                        disabled={edituserId !== service._id}
+                        className='w-14 px-1 border border-gray-300 rounded'
+                      />
+                      <p>-</p>
+                      <p>$</p>
+                      <input
+                        value={secondPrice}
+                        onChange={(e) => {
+                          if (e.target.value.length < 5) handleInputChange(service._id, 'price', `$${firstPrice}-$${e.target.value}`, "service")
+                        }
+                        }
+                        disabled={edituserId !== service._id}
+                        className='w-14 px-1 border border-gray-300 rounded'
+                      />
+                    </div>
+                  );
+                })()
+              ) : (
+                <p>{service.price}</p>
+              )}
             </div>
+
             <div className='flex justify-start gap-5 items-start'>
               <div className=''>
                 <Castle className=' text-yellow-400 ' />
               </div>
               <input
-                value={edituserId === service._id ? editedServices?.provider  ?? "" : service.provider}
+                value={edituserId === service._id ? editedServices?.provider ?? "" : service.provider}
                 onChange={(e) => handleInputChange(service._id, 'provider', e.target.value, "service")}
                 disabled={edituserId !== service._id}
               />
@@ -69,16 +101,16 @@ const AdminService = () => {
             <div className='mt-2 border-t-2 border-fuchsia-500 rounded-2xl'>
               {edituserId === service._id ? (
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-3 mt-3">
-                  <button onClick={() => { handledit(null,null), setEditedServices({}) }} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                  <button onClick={() => { handledit(null, null), setEditedServices({}) }} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                     Cancel
                   </button>
-                  <button onClick={() => { handledit(null,null), handlesaveedituser("services") }} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button onClick={() => { handledit(null, null), handlesaveedituser("services") }} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                     Save
                   </button>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 grid-cols-1 gap-3">
-                  <button className="flex justify-center items-center" onClick={() => handledit(service._id,"service")}>
+                  <button className="flex justify-center items-center" onClick={() => handledit(service._id, "service")}>
                     <Pencil className="w-5 h-5 mt-3 text-cyan-400" />
                   </button>
                   <button className="flex justify-center items-end" onClick={() => handleDelete(service._id, null, null, "services")}>
