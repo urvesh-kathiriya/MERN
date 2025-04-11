@@ -10,7 +10,6 @@ const Register = () => {
   const apiUrl = import.meta.env.VITE_API_URL
   const [email, setemail] = useState(false)
 
-
   const [user, setUser] = useState({
     User_name: '',
     Email: '',
@@ -30,8 +29,8 @@ const Register = () => {
     }
     try {
       const response = await axios.post(`${apiUrl}/api/users/register`, user)
-      
-      if (response.statusText === "OK") {
+      console.log(response)
+      if (response.status === 201) {
         toast.success('Register successfully !', {
           position: "bottom-center",
           autoClose: 5000,
@@ -98,6 +97,8 @@ const Register = () => {
               value={user.User_name}
               onChange={handleUser}
               placeholder="Enter username"
+              pattern='^[A-Za-z]+$'
+              title='Username must contain only letters.'
               required
             />
 
@@ -111,6 +112,8 @@ const Register = () => {
               value={user.Email}
               onChange={handleUser}
               placeholder="Enter email"
+              pattern='^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+              title='Please enter a valid email address.'
               required
             />
             {email && (
@@ -130,6 +133,8 @@ const Register = () => {
               onChange={handleUser}
               placeholder="Enter phone number"
               required
+              pattern='[0-9]{10}'
+              title='Phone number must be 10 digits long.'
             />
 
             <label htmlFor="Password" className="block mb-2">Password</label>
@@ -143,6 +148,8 @@ const Register = () => {
               onChange={handleUser}
               placeholder="Enter password"
               required
+              pattern='(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'
+              title='Password must be at least 8 characters long and contain at least one number, one uppercase letter, and one lowercase letter.'
             />
 
             <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">

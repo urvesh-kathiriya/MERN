@@ -14,28 +14,45 @@ export const home = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-
     try {
-        
-        const { User_name, Password, Number, Email, isAdmin } = req.body;
-        const userExcist = await UserModel.findOne({ User_name: User_name })
+      const { User_name, Password, Number, Email, isAdmin } = req.body;
 
-        // if (userExcist) {
-        //    return res.status(400).json({ message: "user already exists" });
-        // }
-        const hashedPassword = await hashPassword(Password);
-
-        const newUser = new UserModel({
-            User_name, Password: hashedPassword, Number, Email, isAdmin
-        })
-        await newUser.save();
-        res.status(200).json({ message: "data succesfully" });
-
+      if (!User_name || !Password || !Email || !Number  ) {
+        return res.status(400).json({ message: "All fields are required", data: req.body });
+      }
+  
+      const userExists = await UserModel.findOne({ Email });
+  
+      if (userExists) {
+        return res.status(400).json({ message: "User already exists" });
+      }
+  
+      const hashedPassword = await hashPassword(Password);
+  
+      const newUser = new UserModel({
+        User_name,
+        Password: hashedPassword,
+        Number,
+        Email,
+        isAdmin,
+      });
+  
+      await newUser.save();
+  
+      res.status(201).json({
+        message: "User registered successfully",
+        user: {
+          id: newUser._id,
+          User_name,
+          Email,
+          isAdmin,
+        },
+      });
     } catch (error) {
-        res.status(500).json({ message: "Server Error", error })
-
+      res.status(500).json({ message: "Server Error", error });
     }
-}
+  };
+  
 
 
 export const login = async (req, res) => {

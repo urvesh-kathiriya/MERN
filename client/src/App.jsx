@@ -21,6 +21,7 @@ import Adminuser from './components/Layout/Admin-user'
 import Admincontact from './components/Layout/Admin-Contact'
 import AdminService from './components/Layout/Admin-Service'
 import AdminProtectedRoute from './ProtectedRoute/AdminProtectedRoute'
+import AddNewUser from './pages/Admin-Pages/AddNewUser'
 
 function App() {
   const { isLoggin } = useContext(AuthContext)
@@ -47,6 +48,7 @@ function App() {
             <Route path='contacts' element={<Admincontact />} />
             <Route path='services' element={<AdminService />} />
           </Route>
+            <Route path='/admin/users/addNewUser' element={<AddNewUser />} />
         </Route>
         <Route path='*' element={<Page404 />} />
       </Routes>

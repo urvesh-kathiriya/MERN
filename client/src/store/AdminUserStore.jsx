@@ -18,6 +18,7 @@ export const AdminProvider = ({ children }) => {
     const navigate = useNavigate()
     const location = useLocation()
     const [def, setDef] = useState()
+    const [addNewUser, setAddNewUser] = useState(false);
     const [editedUsers, setEditedUsers] = useState({
         _id: "",
         User_name: "",
@@ -41,6 +42,23 @@ export const AdminProvider = ({ children }) => {
         setDef(location.pathname)
     }, [def, navigate])
 
+    const ActiveAddToNewUser = (bool) => {
+        setAddNewUser(bool)
+
+    }
+
+    const handleAddUser = async (newUserData) => {
+        try {
+            const response = await axios.post(`${api}/api/users/register`, newUserData)
+
+            if (response.status === 201) {
+                setAddNewUser(false)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         if (!token) return;
         const fetchUsers = async () => {
@@ -56,7 +74,7 @@ export const AdminProvider = ({ children }) => {
             setIsLoading(false);
         };
         fetchUsers();
-    }, [token]);
+    }, [token, navigate,addNewUser]);
 
 
     useEffect(() => {
@@ -76,7 +94,7 @@ export const AdminProvider = ({ children }) => {
             }
         }
         fetchcontacts()
-    }, [token])
+    }, [token, navigate])
 
 
     useEffect(() => {
@@ -96,7 +114,7 @@ export const AdminProvider = ({ children }) => {
             }
         }
         fetchservices()
-    }, [token])
+    }, [token, navigate])
 
     const handleInputChange = (id, field, value, edit) => {
         const updateFunction = edit === "user" ? setEditedUsers : setEditedServices;
@@ -187,6 +205,7 @@ export const AdminProvider = ({ children }) => {
             isLoading,
             navigate,
             users,
+            setUsers,
             handleDelete,
             confirmUser,
             setConfirmUser,
@@ -207,9 +226,11 @@ export const AdminProvider = ({ children }) => {
             setEditedServices,
             def,
             handlerdirect,
-            conformemil, 
-            setConformemail
-
+            conformemil,
+            setConformemail,
+            addNewUser,
+            ActiveAddToNewUser,
+            handleAddUser
         }}>
             {children}
         </AdminUserContext.Provider>
