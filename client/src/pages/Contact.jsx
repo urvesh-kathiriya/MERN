@@ -3,17 +3,23 @@ import image from "../assets/images/contact.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../store/auth';
+import { toast } from 'react-toastify';
 
 
 const Contact = () => {
   const navigate = useNavigate();
   const apiurl = import.meta.env.VITE_API_URL
-  const {data}= useContext(AuthContext)
+  const { data, token } = useContext(AuthContext)
   const [contact, setContact] = useState({
     username: "",
     email: "",
     message: ""
   });
+  const [Allcontacts, setAllcontacts] = useState([])
+  const [page, setPage] = useState(1)
+  const [limit] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
 
 
   useEffect(() => {
@@ -23,32 +29,69 @@ const Contact = () => {
         email: data.Email || "",
         message: ""
       });
-      
+
     }
   }, [data]);
+
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(`${apiurl}/api/contact`, contact);
       if (res.status === 200) {
-        alert("Message sent successfully!");
+        toast.success('Message sent successfully !', {
+          position: "bottom-center",
+          autoClose: 5000,
+          theme: "dark",
+        });
         setContact({
           ...contact,
           message: ""
         });
-      } else {
-        alert("Message not sent!");
       }
     } catch (error) {
       console.log(error)
     }
   };
 
+  useEffect(() => {
+    const fetchAllContacts = async () => {
+      try {
+        const res = await axios.get(`${apiurl}/api/contact?page=${page}&limit=${limit}`,
+          {
+            headers: { 'authToken': `Bearer ${token || ''}` }
+          }
+        )
+        if (res.status === 200) {
+          console.log(res.data)
+          setAllcontacts(res.data.data)
+          setTotalPages(res.data.totalPages);
+          setTotalItems(res.data.totalItems);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchAllContacts()
+
+  }, [page])
+
   const handleContact = (e) => {
     const { name, value } = e.target;
     setContact((prev) => ({ ...prev, [name]: value }));
   };
+
+  const handlePrev = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const handleNext = () => {
+    if (page < totalPages) setPage(page + 1);
+  };
+
+
 
   return (
     <div>
@@ -79,6 +122,42 @@ const Contact = () => {
             </form>
           </div>
         </div>
+      </div>
+      <div className='p-5 m-5'>
+
+        <div className='grid grid-cols-3'>
+          {Allcontacts?.map((item) => (
+            <div key={item._id} className="bg-gray-200 p-6 rounded-lg shadow-lg w-96 mt-5">
+              <div>
+                <p>{item.username}</p>
+              </div>
+              <div>
+                <p>{item.email}</p>
+              </div>
+              <div>
+                <p>{item.message}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        {Allcontacts &&
+          <div className="flex justify-center items-center gap-5 mt-5 p-5">
+            <div className="bg-gray-500 px-5 py-3">
+              <button onClick={handlePrev} disabled={page === 1}>
+                Prev
+              </button>
+            </div>
+            <span >
+              Page {page} of {totalPages}
+            </span>
+            <div className="bg-gray-500 px-5 py-3">
+              <button onClick={handleNext} disabled={page === totalPages}>
+                Next
+              </button>
+            </div>
+          </div>
+          }
+
       </div>
       <section className='mb-3'>
         <iframe

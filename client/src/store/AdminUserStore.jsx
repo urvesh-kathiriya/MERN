@@ -74,7 +74,7 @@ export const AdminProvider = ({ children }) => {
             setIsLoading(false);
         };
         fetchUsers();
-    }, [token, navigate,addNewUser]);
+    }, [token, navigate, addNewUser]);
 
 
     useEffect(() => {
@@ -197,42 +197,42 @@ export const AdminProvider = ({ children }) => {
         } catch (error) {
             console.log(error);
         }
-    };
+};
 
 
-    return (
-        <AdminUserContext.Provider value={{
-            isLoading,
-            navigate,
-            users,
-            setUsers,
-            handleDelete,
-            confirmUser,
-            setConfirmUser,
-            deleteUser,
-            handledit,
-            edituserId,
-            editedUsers,
-            setEditedUsers,
-            handlesaveedituser,
-            searchuser,
-            setSearchuser,
-            contacts,
-            setContacts,
-            services,
-            setServices,
-            handleInputChange,
-            editedServices,
-            setEditedServices,
-            def,
-            handlerdirect,
-            conformemil,
-            setConformemail,
-            addNewUser,
-            ActiveAddToNewUser,
-            handleAddUser
-        }}>
-            {children}
-        </AdminUserContext.Provider>
-    );
+return (
+    <AdminUserContext.Provider value={{
+        isLoading,
+        navigate,
+        users,
+        setUsers,
+        handleDelete,
+        confirmUser,
+        setConfirmUser,
+        deleteUser,
+        handledit,
+        edituserId,
+        editedUsers,
+        setEditedUsers,
+        handlesaveedituser,
+        searchuser,
+        setSearchuser,
+        contacts,
+        setContacts,
+        services,
+        setServices,
+        handleInputChange,
+        editedServices,
+        setEditedServices,
+        def,
+        handlerdirect,
+        conformemil,
+        setConformemail,
+        addNewUser,
+        ActiveAddToNewUser,
+        handleAddUser
+    }}>
+        {children}
+    </AdminUserContext.Provider>
+);
 };
