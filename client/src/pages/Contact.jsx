@@ -20,6 +20,7 @@ const Contact = () => {
   const [limit] = useState(3);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const [ContactLoading, setContactLoading] = useState(false)
 
 
   useEffect(() => {
@@ -69,6 +70,7 @@ const Contact = () => {
           setAllcontacts(res.data.data)
           setTotalPages(res.data.totalPages);
           setTotalItems(res.data.totalItems);
+          setContactLoading(true)
         }
       } catch (error) {
         console.log(error)
@@ -124,39 +126,44 @@ const Contact = () => {
         </div>
       </div>
       <div className='p-5 m-5'>
+        {ContactLoading &&
+          <div className='p-5 m-5'>
+            <div className='grid grid-cols-3'>
+              {Allcontacts?.map((item) => (
+                <div key={item._id} className="bg-gray-200 p-6 rounded-lg shadow-lg w-96 mt-5">
+                  <div>
+                    <p>{item.username}</p>
+                  </div>
+                  <div>
+                    <p>{item.email}</p>
+                  </div>
+                  <div>
+                    <p>{item.message}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-        <div className='grid grid-cols-3'>
-          {Allcontacts?.map((item) => (
-            <div key={item._id} className="bg-gray-200 p-6 rounded-lg shadow-lg w-96 mt-5">
-              <div>
-                <p>{item.username}</p>
+            <div className="flex justify-center items-center gap-5 mt-5 p-5">
+              <div className="bg-gray-500 px-5 py-3">
+                <button onClick={handlePrev} disabled={page === 1}>
+                  Prev
+                </button>
               </div>
-              <div>
-                <p>{item.email}</p>
+              <span >
+                Page {page} of {totalPages}
+              </span>
+              <div className="bg-gray-500 px-5 py-3">
+                <button onClick={handleNext} disabled={page === totalPages}>
+                  Next
+                </button>
               </div>
-              <div>
-                <p>{item.message}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        {Allcontacts &&
-          <div className="flex justify-center items-center gap-5 mt-5 p-5">
-            <div className="bg-gray-500 px-5 py-3">
-              <button onClick={handlePrev} disabled={page === 1}>
-                Prev
-              </button>
-            </div>
-            <span >
-              Page {page} of {totalPages}
-            </span>
-            <div className="bg-gray-500 px-5 py-3">
-              <button onClick={handleNext} disabled={page === totalPages}>
-                Next
-              </button>
             </div>
           </div>
-          }
+        }
+
+
+
 
       </div>
       <section className='mb-3'>

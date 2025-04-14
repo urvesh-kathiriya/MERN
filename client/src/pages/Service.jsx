@@ -8,6 +8,7 @@ const Service = () => {
   const [limit] = useState(3);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
+  const [ServiceLoading, setServiceLoading] = useState(false)
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -16,6 +17,7 @@ const Service = () => {
         setServices(res.data.data);
         setTotalPages(res.data.totalPages);
         setTotalItems(res.data.totalItems);
+        setServiceLoading(true)
       } catch (error) {
         console.error("Error fetching services:", error);
       }
@@ -38,7 +40,7 @@ const Service = () => {
         <h1 className="flex justify-center items-center text-5xl font-mono tracking-wide text-fuchsia-800 mt-5 p-5">All Service</h1>
       </div>
 
-      {services &&
+      {ServiceLoading &&
         <div>
           <div className="md:px-40 px-20 mt-8 grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-4">
             {services?.map((service) => (
