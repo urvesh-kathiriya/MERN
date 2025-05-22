@@ -131,11 +131,9 @@ const Contact = () => {
             <div className='grid grid-cols-3'>
               {Allcontacts?.map((item) => (
                 <div key={item._id} className="bg-gray-200 p-6 rounded-lg shadow-lg w-96 mt-5">
-                  <div>
-                    <p>{item.username}</p>
-                  </div>
-                  <div>
-                    <p>{item.email}</p>
+                 
+                  <div className='text-2xl'>
+                    <p className='tracking-wider'>Message </p>
                   </div>
                   <div>
                     <p>{item.message}</p>
